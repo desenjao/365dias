@@ -1,27 +1,6 @@
 {
-  "habits": [
-    {
-      "id": 1704067200000,
-      "name": "Exercício 30min",
-      "created": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": 1704067200001,
-      "name": "Estudar 1 hora",
-      "created": "2024-01-01T00:00:00.000Z"
-    },
-    {
-      "id": 1704067200002,
-      "name": "Meditar 10min",
-      "created": "2024-01-01T00:00:00.000Z"
-    }
-  ],
+  "habits": [],
   "completions": {},
-  "userProfile": {
-    "name": "Habit Warrior",
-    "level": 1,
-    "xp": 0
-  },
-  "unlockedAchievements": [],
-  "exportedAt": "2024-01-01T00:00:00.000Z"
+  "lastUpdated": "2024-01-01T00:00:00.000Z",
+  "version": "1.0"
 }

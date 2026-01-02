@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goal Tracker - Acompanhe suas Metas</title>
+    <title>Habit Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #00B22D;
+            --primary-dark: #008020;
+            --secondary: #FF6B00;
+            --light: #F5F5F5;
+            --dark: #333333;
+            --gray: #666666;
+            --danger: #FF3B30;
+            --success: #00B22D;
+            --warning: #FF9500;
+            --card-bg: #FFFFFF;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -24,250 +39,292 @@
         }
 
         .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            animation: fadeInDown 0.6s ease;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .main-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
             background: white;
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 0.6s ease;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            color: var(--gray);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--light);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .habits-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .habits-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .habits-header h2 {
+            color: var(--dark);
+            font-size: 20px;
+        }
+
+        .habit-tag {
+            background: var(--light);
+            color: var(--gray);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .habits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .habit-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .habit-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow);
+        }
+
+        .habit-info {
+            flex: 1;
+        }
+
+        .habit-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .habit-description {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .habit-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-complete {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .btn-complete.active {
+            background: var(--success);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
             text-align: center;
+            box-shadow: var(--shadow);
         }
 
-        .stat-card h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
+        .stat-value {
+            font-size: 36px;
             font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #f1f3f5;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .goal-list {
-            display: grid;
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .goal-item {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-
-        .goal-item:hover {
-            transform: translateX(4px);
-        }
-
-        .goal-info h4 {
-            font-size: 1.1rem;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .goal-info p {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        .goal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            border-radius: 8px;
-        }
-
-        .btn-complete {
-            background: #10b981;
-        }
-
-        .btn-delete {
-            background: #ef4444;
-        }
-
-        /* GitHub Style Heatmap */
-        .heatmap-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #e9ecef;
+        .stat-label {
+            color: var(--gray);
+            font-size: 14px;
         }
 
         .heatmap-container {
-            overflow-x: auto;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 16px;
-        }
-
-        .heatmap-months {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 8px;
-            padding-left: 32px;
-        }
-
-        .month-label {
-            font-size: 0.75rem;
-            color: #6c757d;
-            min-width: 40px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
         }
 
         .heatmap-grid {
             display: grid;
-            grid-template-columns: 32px repeat(52, 12px);
+            grid-template-columns: repeat(53, 1fr);
             gap: 3px;
+            margin-top: 15px;
         }
 
-        .day-label {
-            font-size: 0.7rem;
-            color: #6c757d;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 8px;
-        }
-
-        .heatmap-week {
-            display: grid;
-            grid-template-rows: repeat(7, 12px);
-            gap: 3px;
-        }
-
-        .day-square {
+        .heatmap-day {
             width: 12px;
             height: 12px;
-            background: #ebedf0;
             border-radius: 2px;
-            transition: all 0.2s;
-            cursor: pointer;
         }
 
-        .day-square:hover {
-            transform: scale(1.3);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .day-square[data-level="1"] { background: #9be9a8; }
-        .day-square[data-level="2"] { background: #40c463; }
-        .day-square[data-level="3"] { background: #30a14e; }
-        .day-square[data-level="4"] { background: #216e39; }
-
-        .legend {
+        .heatmap-legend {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 16px;
-            justify-content: flex-end;
-            font-size: 0.8rem;
-            color: #6c757d;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            gap: 10px;
+            margin-top: 15px;
+            color: var(--gray);
+            font-size: 12px;
         }
 
         .modal {
@@ -277,421 +334,808 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
-            animation: fadeIn 0.3s ease;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal.active {
             display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .modal-content {
             background: white;
             padding: 30px;
-            border-radius: 24px;
-            max-width: 500px;
+            border-radius: 20px;
             width: 90%;
-            animation: slideIn 0.3s ease;
+            max-width: 500px;
+            animation: modalIn 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        @keyframes fadeInUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .modal-title {
+            font-size: 20px;
+            color: var(--dark);
         }
 
-        @keyframes fadeInDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
         }
 
-        .empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+            z-index: 1001;
+            animation: toastIn 0.3s ease;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .controls {
+                width: 100%;
+                justify-content: center;
             }
-
-            .goal-item {
-                flex-direction: column;
-                gap: 16px;
-                align-items: flex-start;
+            
+            .heatmap-grid {
+                grid-template-columns: repeat(26, 1fr);
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <h1>🎯 Goal Tracker</h1>
-            <p>Acompanhe suas metas e conquiste seus objetivos</p>
-        </div>
-
-        <div class="main-card">
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Total de Metas</h3>
-                    <div class="value" id="totalGoals">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Concluídas</h3>
-                    <div class="value" id="completedGoals">0</div>
-                </div>
-                <div class="stat-card">
-                    <h3>Sequência Atual</h3>
-                    <div class="value" id="currentStreak">0</div>
-                </div>
+            <div class="logo">
+                <i class="fas fa-fire"></i>
+                <h1>Habit Tracker</h1>
             </div>
-
-            <!-- Add Goal Button -->
-            <div style="margin-bottom: 30px;">
-                <button class="btn" onclick="openModal()">
-                    ➕ Adicionar Nova Meta
+            <div class="controls">
+                <button class="btn btn-primary" onclick="openModal()">
+                    <i class="fas fa-plus"></i> Novo Hábito
                 </button>
             </div>
+        </div>
 
-            <!-- Goals List -->
-            <div class="section-title">📋 Minhas Metas</div>
-            <div class="goal-list" id="goalList">
-                <div class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <p>Nenhuma meta criada ainda. Comece adicionando sua primeira meta!</p>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('today')">Hoje</button>
+            <button class="tab" onclick="switchTab('all')">Todos</button>
+            <button class="tab" onclick="switchTab('stats')">Estatísticas</button>
+        </div>
+
+        <!-- Today Tab -->
+        <div id="todayTab" class="tab-content">
+            <div class="habits-section">
+                <div class="habits-header">
+                    <h2>Hábitos de Hoje</h2>
+                    <div class="habit-tag">0 de 0 concluídos</div>
+                </div>
+                <div class="habits-list" id="todayHabitsList">
+                    <!-- Hábitos de hoje serão renderizados aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- All Habits Tab -->
+        <div id="allTab" class="tab-content" style="display: none;">
+            <div class="habits-section">
+                <div class="habits-header">
+                    <h2>Todos os Hábitos</h2>
+                    <div class="habit-tag">Total: 0</div>
+                </div>
+                <div class="habits-list" id="allHabitsList">
+                    <!-- Todos os hábitos serão renderizados aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="statsTab" class="tab-content" style="display: none;">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check" style="color: var(--primary); font-size: 24px;"></i>
+                    <div class="stat-value" id="totalHabits">0</div>
+                    <div class="stat-label">Hábitos Totais</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-fire" style="color: var(--warning); font-size: 24px;"></i>
+                    <div class="stat-value" id="currentStreak">0 de 0</div>
+                    <div class="stat-label">Sequência Atual</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line" style="color: var(--success); font-size: 24px;"></i>
+                    <div class="stat-value" id="successRate">0%</div>
+                    <div class="stat-label">Taxa de Sucesso</div>
                 </div>
             </div>
 
             <!-- Heatmap -->
-            <div class="heatmap-section">
-                <div class="section-title">🔥 Atividade do Ano</div>
-                <div class="heatmap-container">
-                    <div id="heatmapGrid"></div>
-                    <div class="legend">
-                        <span>Menos</span>
-                        <div class="legend-item">
-                            <div class="day-square"></div>
-                            <div class="day-square" data-level="1"></div>
-                            <div class="day-square" data-level="2"></div>
-                            <div class="day-square" data-level="3"></div>
-                            <div class="day-square" data-level="4"></div>
-                        </div>
-                        <span>Mais</span>
+            <div class="heatmap-container">
+                <h2>Histórico de Atividade</h2>
+                <div class="heatmap-grid" id="heatmapGrid">
+                    <!-- Heatmap será renderizado aqui -->
+                </div>
+                <div class="heatmap-legend">
+                    <span>Menos</span>
+                    <div style="display: flex; gap: 3px;">
+                        <div class="heatmap-day" style="background: #E8E8E8;"></div>
+                        <div class="heatmap-day" style="background: #9BE9A8;"></div>
+                        <div class="heatmap-day" style="background: #40C463;"></div>
+                        <div class="heatmap-day" style="background: #30A14E;"></div>
+                        <div class="heatmap-day" style="background: #216E39;"></div>
                     </div>
+                    <span>Mais</span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal -->
-    <div class="modal" id="goalModal">
+    <div class="modal" id="habitModal">
         <div class="modal-content">
-            <div class="section-title">✨ Nova Meta</div>
-            <form id="goalForm">
-                <div class="input-group">
-                    <label>Nome da Meta</label>
-                    <input type="text" id="goalTitle" placeholder="Ex: Estudar programação" required>
+            <div class="modal-header">
+                <h3 class="modal-title">Novo Hábito</h3>
+                <button class="btn-icon" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="habitForm">
+                <div class="form-group">
+                    <label for="habitName">Nome do Hábito</label>
+                    <input type="text" id="habitName" class="form-control" placeholder="Ex: Beber água" required>
                 </div>
-                <div class="input-group">
-                    <label>Descrição</label>
-                    <input type="text" id="goalDescription" placeholder="Ex: Estudar 1 hora por dia">
+                <div class="form-group">
+                    <label for="habitDescription">Descrição</label>
+                    <input type="text" id="habitDescription" class="form-control" placeholder="Ex: 2 litros por dia">
                 </div>
-                <div class="input-group">
-                    <label>Frequência</label>
-                    <select id="goalFrequency">
-                        <option value="daily">Diária</option>
+                <div class="form-group">
+                    <label for="habitFrequency">Frequência</label>
+                    <select id="habitFrequency" class="form-control" required>
+                        <option value="daily">Diário</option>
+                        <option value="weekdays">Dias úteis</option>
                         <option value="weekly">Semanal</option>
                         <option value="monthly">Mensal</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 24px;">
-                    <button type="submit" class="btn">Criar Meta</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <div class="form-group">
+                    <label for="habitTime">Período do Dia</label>
+                    <select id="habitTime" class="form-control" required>
+                        <option value="morning">Manhã</option>
+                        <option value="afternoon">Tarde</option>
+                        <option value="evening">Noite</option>
+                        <option value="anytime">Qualquer hora</option>
+                    </select>
                 </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-check"></i> Criar Hábito
+                </button>
             </form>
         </div>
     </div>
 
-    <script>
-        // Data Storage
-        const STORAGE_KEY = 'goalTrackerData';
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
 
-        function loadData() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : { goals: [], completions: {} };
+   <script>
+    // Dados da Aplicação - VÊM DO data.json
+    let habits = [];
+    let completions = {};
+    let currentDataFile = null; // Guarda referência do arquivo carregado
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', async function() {
+        await loadDataFromJson();
+        renderTodayHabits();
+        renderAllHabits();
+        renderHeatmap();
+        updateStats();
+        setupFileHandlers();
+    });
+
+    // ================ CONFIGURAR HANDLERS DE ARQUIVO ================
+    function setupFileHandlers() {
+        const controls = document.querySelector('.header .controls');
+        
+        // Botão para carregar data.json
+        const loadBtn = document.createElement('button');
+        loadBtn.className = 'btn btn-secondary';
+        loadBtn.innerHTML = '<i class="fas fa-folder-open"></i> Abrir data.json';
+        loadBtn.onclick = () => document.getElementById('jsonFileInput').click();
+        loadBtn.title = 'Abrir arquivo data.json existente';
+        
+        // Botão para salvar alterações
+        const saveBtn = document.createElement('button');
+        saveBtn.className = 'btn btn-primary';
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Salvar';
+        saveBtn.onclick = saveDataToFile;
+        saveBtn.title = 'Salvar alterações em data.json';
+        saveBtn.style.background = '#2196F3';
+        
+        // Input file oculto
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.id = 'jsonFileInput';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
+        fileInput.onchange = handleFileSelect;
+        
+        // Status do arquivo
+        const fileStatus = document.createElement('div');
+        fileStatus.id = 'fileStatus';
+        fileStatus.style.marginLeft = '10px';
+        fileStatus.style.color = '#666';
+        fileStatus.style.fontSize = '12px';
+        fileStatus.style.alignSelf = 'center';
+        fileStatus.innerHTML = 'Nenhum arquivo carregado';
+        
+        // Adicionar elementos
+        controls.appendChild(loadBtn);
+        controls.appendChild(saveBtn);
+        document.body.appendChild(fileInput);
+        
+        // Adicionar status após os botões
+        setTimeout(() => {
+            controls.parentNode.insertBefore(fileStatus, controls.nextSibling);
+        }, 100);
+        
+        // Tentar carregar automaticamente data.json
+        autoLoadDataJson();
+    }
+
+    // ================ CARREGAR data.json AUTOMATICAMENTE ================
+    async function autoLoadDataJson() {
+        try {
+            const response = await fetch('data.json');
+            if (response.ok) {
+                const data = await response.json();
+                habits = data.habits || [];
+                completions = data.completions || {};
+                updateFileStatus('data.json carregado', 'success');
+                showToast('Dados carregados de data.json');
+            }
+        } catch (error) {
+            // Não faz nada se não encontrar
+            console.log('data.json não encontrado na raiz');
         }
+    }
 
-        function saveData(data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
-
-        let appData = loadData();
-
-        // Modal Functions
-        function openModal() {
-            document.getElementById('goalModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('goalModal').classList.remove('active');
-            document.getElementById('goalForm').reset();
-        }
-
-        // Goal Functions
-        document.getElementById('goalForm').addEventListener('submit', (e) => {
-            e.preventDefault();
+    // ================ MANIPULAR SELEÇÃO DE ARQUIVO ================
+    async function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
             
-            const goal = {
-                id: Date.now(),
-                title: document.getElementById('goalTitle').value,
-                description: document.getElementById('goalDescription').value,
-                frequency: document.getElementById('goalFrequency').value,
-                createdAt: new Date().toISOString(),
-                completed: false
-            };
-
-            appData.goals.push(goal);
-            saveData(appData);
-            closeModal();
-            renderGoals();
+            // Validar estrutura
+            if (!data.habits) {
+                throw new Error('Arquivo inválido: falta propriedade "habits"');
+            }
+            
+            habits = data.habits || [];
+            completions = data.completions || {};
+            currentDataFile = file;
+            
+            updateFileStatus(file.name, 'success');
+            showToast(`Arquivo "${file.name}" carregado com sucesso!`);
+            
+            renderTodayHabits();
+            renderAllHabits();
             updateStats();
-        });
-
-        function completeGoal(goalId) {
-            const today = new Date().toISOString().split('T')[0];
             
-            if (!appData.completions[today]) {
-                appData.completions[today] = [];
-            }
-            
-            if (!appData.completions[today].includes(goalId)) {
-                appData.completions[today].push(goalId);
-                saveData(appData);
-                renderHeatmap();
-                updateStats();
-                
-                // Visual feedback
-                showToast('✅ Meta concluída hoje!');
-            } else {
-                showToast('ℹ️ Você já completou essa meta hoje!');
-            }
+        } catch (error) {
+            console.error('Erro ao carregar arquivo:', error);
+            updateFileStatus('Erro: arquivo inválido', 'error');
+            showToast('Erro ao carregar arquivo JSON');
         }
+    }
 
-        function deleteGoal(goalId) {
-            if (confirm('Tem certeza que deseja excluir esta meta?')) {
-                appData.goals = appData.goals.filter(g => g.id !== goalId);
-                
-                // Remove from completions
-                Object.keys(appData.completions).forEach(date => {
-                    appData.completions[date] = appData.completions[date].filter(id => id !== goalId);
-                });
-                
-                saveData(appData);
-                renderGoals();
-                renderHeatmap();
-                updateStats();
-            }
+    // ================ SALVAR DADOS NO ARQUIVO ================
+    function saveDataToFile() {
+        if (!currentDataFile && !confirm('Nenhum arquivo carregado. Deseja criar um novo data.json?')) {
+            return;
         }
+        
+        const data = {
+            habits: habits,
+            completions: completions,
+            lastUpdated: new Date().toISOString(),
+            version: "1.0"
+        };
+        
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        
+        // Criar nome do arquivo
+        let fileName = 'data.json';
+        if (currentDataFile) {
+            fileName = currentDataFile.name;
+        }
+        
+        // Criar link para download
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        
+        // Adicionar e clicar no link
+        document.body.appendChild(link);
+        link.click();
+        
+        // Limpar
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 100);
+        
+        updateFileStatus(`${fileName} salvo`, 'success');
+        showToast(`Arquivo "${fileName}" pronto para salvar!`);
+    }
 
-        function renderGoals() {
-            const goalList = document.getElementById('goalList');
-            
-            if (appData.goals.length === 0) {
-                goalList.innerHTML = `
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        <p>Nenhuma meta criada ainda. Comece adicionando sua primeira meta!</p>
+    // ================ ATUALIZAR STATUS DO ARQUIVO ================
+    function updateFileStatus(message, type = 'info') {
+        const statusEl = document.getElementById('fileStatus');
+        if (!statusEl) return;
+        
+        const colors = {
+            success: '#4CAF50',
+            error: '#F44336',
+            info: '#666'
+        };
+        
+        statusEl.innerHTML = `<i class="fas fa-file${type === 'success' ? '-check' : type === 'error' ? '-exclamation' : ''}"></i> ${message}`;
+        statusEl.style.color = colors[type] || colors.info;
+    }
+
+    // ================ FUNÇÕES DE RENDERIZAÇÃO (MANTIDAS) ================
+    function renderTodayHabits() {
+        const todayList = document.getElementById('todayHabitsList');
+        const today = new Date().toLocaleDateString('pt-BR');
+        
+        let html = '';
+        let completedCount = 0;
+        let totalToday = 0;
+
+        habits.forEach(habit => {
+            if (shouldShowToday(habit)) {
+                totalToday++;
+                const isCompleted = habit.completedToday;
+                if (isCompleted) completedCount++;
+                
+                html += `
+                    <div class="habit-item">
+                        <div class="habit-info">
+                            <div class="habit-title">
+                                <i class="fas fa-${getHabitIcon(habit.name)}"></i>
+                                ${habit.name}
+                                ${isCompleted ? '<i class="fas fa-check-circle" style="color: var(--success);"></i>' : ''}
+                            </div>
+                            <div class="habit-description">${habit.description}</div>
+                            <div class="habit-tag">
+                                <i class="fas fa-fire"></i> ${habit.streak} dias
+                            </div>
+                        </div>
+                        <div class="habit-actions">
+                            <button class="btn-icon btn-complete ${isCompleted ? 'active' : ''}" 
+                                    onclick="toggleHabit(${habit.id})">
+                                <i class="fas ${isCompleted ? 'fa-check' : 'fa-plus'}"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
-                return;
             }
+        });
 
-            goalList.innerHTML = appData.goals.map(goal => `
-                <div class="goal-item">
-                    <div class="goal-info">
-                        <h4>${goal.title}</h4>
-                        <p>${goal.description} • ${getFrequencyLabel(goal.frequency)}</p>
+        if (totalToday === 0) {
+            html = `
+                <div class="empty-state">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Nenhum hábito para hoje!</h3>
+                    <p>Que tal criar um novo hábito ou descansar um pouco?</p>
+                </div>
+            `;
+        }
+
+        todayList.innerHTML = html;
+        
+        const headerTag = document.querySelector('.habits-section .habit-tag');
+        if (headerTag) {
+            headerTag.textContent = `${completedCount} de ${totalToday} concluídos`;
+        }
+    }
+
+    function renderAllHabits() {
+        const allList = document.getElementById('allHabitsList');
+        
+        if (habits.length === 0) {
+            allList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Nenhum hábito ainda</h3>
+                    <p>Crie seu primeiro hábito clicando no botão "+"</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        habits.forEach(habit => {
+            html += `
+                <div class="habit-item">
+                    <div class="habit-info">
+                        <div class="habit-title">
+                            <i class="fas fa-${getHabitIcon(habit.name)}"></i>
+                            ${habit.name}
+                        </div>
+                        <div class="habit-description">${habit.description}</div>
+                        <div class="habit-tag">
+                            <i class="fas fa-${getFrequencyIcon(habit.frequency)}"></i>
+                            ${getFrequencyText(habit.frequency)}
+                            <span style="margin-left: 8px;">
+                                <i class="fas fa-fire"></i> ${habit.streak} dias
+                            </span>
+                        </div>
                     </div>
-                    <div class="goal-actions">
-                        <button class="btn btn-small btn-complete" onclick="completeGoal(${goal.id})">
-                            ✓ Concluir Hoje
+                    <div class="habit-actions">
+                        <button class="btn-icon" onclick="editHabit(${habit.id})">
+                            <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-small btn-delete" onclick="deleteGoal(${goal.id})">
-                            🗑️
+                        <button class="btn-icon" onclick="deleteHabit(${habit.id})" 
+                                style="color: var(--danger);">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>
-            `).join('');
-        }
-
-        function getFrequencyLabel(freq) {
-            const labels = {
-                daily: 'Diária',
-                weekly: 'Semanal',
-                monthly: 'Mensal'
-            };
-            return labels[freq] || freq;
-        }
-
-        // Heatmap Functions
-        function renderHeatmap() {
-            const grid = document.getElementById('heatmapGrid');
-            const today = new Date();
-            const startDate = new Date(today.getFullYear(), 0, 1);
-            
-            let html = '<div class="heatmap-months"></div>';
-            
-            const dayLabels = ['', 'Seg', '', 'Qua', '', 'Sex', ''];
-            
-            // Generate weeks
-            const weeks = [];
-            let currentDate = new Date(startDate);
-            
-            while (currentDate <= today) {
-                const week = [];
-                for (let i = 0; i < 7; i++) {
-                    if (currentDate <= today) {
-                        week.push(new Date(currentDate));
-                        currentDate.setDate(currentDate.getDate() + 1);
-                    }
-                }
-                weeks.push(week);
-            }
-
-            html = '<div style="display: grid; grid-template-columns: 32px 1fr; gap: 3px;">';
-            
-            // Day labels column
-            html += '<div style="display: grid; grid-template-rows: repeat(7, 12px); gap: 3px;">';
-            dayLabels.forEach(label => {
-                html += `<div class="day-label">${label}</div>`;
-            });
-            html += '</div>';
-            
-            // Weeks container
-            html += '<div style="display: grid; grid-auto-flow: column; gap: 3px;">';
-            
-            weeks.forEach(week => {
-                html += '<div class="heatmap-week">';
-                for (let i = 0; i < 7; i++) {
-                    if (week[i]) {
-                        const dateStr = week[i].toISOString().split('T')[0];
-                        const level = getActivityLevel(dateStr);
-                        const title = `${dateStr}: ${appData.completions[dateStr]?.length || 0} meta(s) concluída(s)`;
-                        html += `<div class="day-square" data-level="${level}" title="${title}"></div>`;
-                    } else {
-                        html += '<div></div>';
-                    }
-                }
-                html += '</div>';
-            });
-            
-            html += '</div></div>';
-            
-            grid.innerHTML = html;
-        }
-
-        function getActivityLevel(dateStr) {
-            const count = appData.completions[dateStr]?.length || 0;
-            if (count === 0) return 0;
-            if (count === 1) return 1;
-            if (count === 2) return 2;
-            if (count === 3) return 3;
-            return 4;
-        }
-
-        // Stats Functions
-        function updateStats() {
-            document.getElementById('totalGoals').textContent = appData.goals.length;
-            
-            const totalCompletions = Object.values(appData.completions).reduce((sum, arr) => sum + arr.length, 0);
-            document.getElementById('completedGoals').textContent = totalCompletions;
-            
-            document.getElementById('currentStreak').textContent = calculateStreak();
-        }
-
-        function calculateStreak() {
-            const dates = Object.keys(appData.completions).sort().reverse();
-            let streak = 0;
-            const today = new Date().toISOString().split('T')[0];
-            
-            for (let i = 0; i < dates.length; i++) {
-                const expectedDate = new Date();
-                expectedDate.setDate(expectedDate.getDate() - i);
-                const expectedDateStr = expectedDate.toISOString().split('T')[0];
-                
-                if (dates[i] === expectedDateStr && appData.completions[dates[i]].length > 0) {
-                    streak++;
-                } else {
-                    break;
-                }
-            }
-            
-            return streak;
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.textContent = message;
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #1a1a1a;
-                color: white;
-                padding: 16px 24px;
-                border-radius: 12px;
-                font-weight: 600;
-                z-index: 10000;
-                animation: slideInRight 0.3s ease;
             `;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+        });
+
+        allList.innerHTML = html;
+        
+        const headerTag = document.querySelector('#allTab .habit-tag');
+        if (headerTag) {
+            headerTag.textContent = `Total: ${habits.length}`;
         }
+    }
 
-        // Initialize
-        renderGoals();
-        renderHeatmap();
-        updateStats();
+    function renderHeatmap() {
+        const grid = document.getElementById('heatmapGrid');
+        let html = '';
+        
+        const today = new Date();
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - 364);
+        
+        let currentDate = new Date(startDate);
+        
+        for (let i = 0; i < 365; i++) {
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const level = getActivityLevel(dateStr);
+            const color = getHeatmapColor(level);
+            
+            html += `<div class="heatmap-day" style="background: ${color};" 
+                     title="${formatDate(currentDate)}: Nível ${level}"></div>`;
+            
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        grid.innerHTML = html;
+    }
 
-        // Close modal on outside click
-        document.getElementById('goalModal').addEventListener('click', (e) => {
-            if (e.target.id === 'goalModal') {
-                closeModal();
+    // ================ FUNÇÕES UTILITÁRIAS ================
+    function getHabitIcon(name) {
+        const icons = {
+            'água': 'tint', 'exercitar': 'dumbbell', 'meditar': 'spa',
+            'ler': 'book', 'planejar': 'tasks', 'dormir': 'moon',
+            'estudar': 'graduation-cap'
+        };
+        
+        for (const [key, icon] of Object.entries(icons)) {
+            if (name.toLowerCase().includes(key)) return icon;
+        }
+        return 'check-circle';
+    }
+
+    function getFrequencyIcon(freq) {
+        const icons = {
+            'daily': 'calendar-day', 'weekdays': 'briefcase',
+            'weekly': 'calendar-week', 'monthly': 'calendar-alt'
+        };
+        return icons[freq] || 'calendar';
+    }
+
+    function getFrequencyText(freq) {
+        const texts = {
+            'daily': 'Diário', 'weekdays': 'Dias úteis',
+            'weekly': 'Semanal', 'monthly': 'Mensal'
+        };
+        return texts[freq] || freq;
+    }
+
+    function shouldShowToday(habit) {
+        const today = new Date();
+        const day = today.getDay();
+        
+        switch(habit.frequency) {
+            case 'daily': return true;
+            case 'weekdays': return day >= 1 && day <= 5;
+            case 'weekly': return day === 1;
+            case 'monthly': return today.getDate() === 1;
+            default: return true;
+        }
+    }
+
+    function getActivityLevel(dateStr) {
+        let level = 0;
+        habits.forEach(habit => {
+            if (habit.createdAt && habit.createdAt.includes(dateStr.substring(0, 10))) {
+                level += habit.completedToday ? 1 : 0.5;
             }
         });
-    </script>
+        return Math.min(4, Math.floor(level));
+    }
+
+    function getHeatmapColor(level) {
+        const colors = ['#E8E8E8', '#9BE9A8', '#40C463', '#30A14E', '#216E39'];
+        return colors[level] || colors[0];
+    }
+
+    function formatDate(date) {
+        return date.toLocaleDateString('pt-BR');
+    }
+
+    // ================ FUNÇÕES DE INTERAÇÃO ================
+    function openModal() {
+        document.getElementById('habitModal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('habitModal').classList.remove('active');
+        document.getElementById('habitForm').reset();
+    }
+
+    // Form Handler
+    document.getElementById('habitForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const newHabit = {
+            id: Date.now(),
+            name: document.getElementById('habitName').value,
+            description: document.getElementById('habitDescription').value,
+            frequency: document.getElementById('habitFrequency').value,
+            time: document.getElementById('habitTime').value,
+            completedToday: false,
+            streak: 0,
+            createdAt: new Date().toISOString()
+        };
+        
+        habits.push(newHabit);
+        renderTodayHabits();
+        renderAllHabits();
+        updateStats();
+        closeModal();
+        showToast('Hábito criado com sucesso!');
+        
+        // Marcar que há alterações não salvas
+        updateFileStatus('Alterações não salvas', 'error');
+    });
+
+    // Habit Actions
+    function toggleHabit(id) {
+        const habit = habits.find(h => h.id === id);
+        if (!habit) return;
+        
+        habit.completedToday = !habit.completedToday;
+        
+        if (habit.completedToday) {
+            habit.streak++;
+            showToast(`Parabéns! Você completou "${habit.name}"`);
+            createConfetti();
+        } else {
+            habit.streak = Math.max(0, habit.streak - 1);
+        }
+        
+        renderTodayHabits();
+        updateStats();
+        updateFileStatus('Alterações não salvas', 'error');
+    }
+
+    function deleteHabit(id) {
+        if (confirm('Tem certeza que deseja excluir este hábito?')) {
+            habits = habits.filter(h => h.id !== id);
+            renderTodayHabits();
+            renderAllHabits();
+            updateStats();
+            showToast('Hábito excluído');
+            updateFileStatus('Alterações não salvas', 'error');
+        }
+    }
+
+    function editHabit(id) {
+        const habit = habits.find(h => h.id === id);
+        if (!habit) return;
+        
+        document.getElementById('habitName').value = habit.name;
+        document.getElementById('habitDescription').value = habit.description;
+        document.getElementById('habitFrequency').value = habit.frequency;
+        document.getElementById('habitTime').value = habit.time;
+        
+        const form = document.getElementById('habitForm');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+        
+        form.removeEventListener('submit', arguments.callee);
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            habit.name = document.getElementById('habitName').value;
+            habit.description = document.getElementById('habitDescription').value;
+            habit.frequency = document.getElementById('habitFrequency').value;
+            habit.time = document.getElementById('habitTime').value;
+            
+            renderTodayHabits();
+            renderAllHabits();
+            closeModal();
+            showToast('Hábito atualizado!');
+            updateFileStatus('Alterações não salvas', 'error');
+            
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Criar Hábito';
+            form.reset();
+        }, {once: true});
+        
+        openModal();
+    }
+
+    // Tabs
+    function switchTab(tabName) {
+        document.getElementById('todayTab').style.display = 'none';
+        document.getElementById('allTab').style.display = 'none';
+        document.getElementById('statsTab').style.display = 'none';
+        
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        document.getElementById(tabName + 'Tab').style.display = 'block';
+        event.target.classList.add('active');
+    }
+
+    // Stats
+    function updateStats() {
+        const totalHabits = habits.length;
+        const completedToday = habits.filter(h => h.completedToday).length;
+        const totalCompletions = habits.reduce((sum, h) => sum + h.streak, 0);
+        
+        let successRate = 0;
+        if (totalHabits > 0) {
+            const avgStreak = totalCompletions / totalHabits;
+            successRate = Math.min(100, Math.round((avgStreak / 30) * 100));
+        }
+        
+        document.getElementById('totalHabits').textContent = totalHabits;
+        document.getElementById('currentStreak').textContent = `${completedToday} de ${habits.length} hoje`;
+        document.getElementById('successRate').textContent = `${successRate}%`;
+    }
+
+    // Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Confetti Effect
+    function createConfetti() {
+        const colors = ['#00B22D', '#FF6B00', '#FF9500', '#FFC107'];
+        
+        for (let i = 0; i < 20; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                border-radius: 50%;
+                top: 90%;
+                left: ${50 + Math.random() * 10 - 5}%;
+                z-index: 10000;
+                pointer-events: none;
+                animation: confetti 1s ease-out forwards;
+            `;
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 1000);
+        }
+        
+        if (!document.querySelector('#confetti-animation')) {
+            const style = document.createElement('style');
+            style.id = 'confetti-animation';
+            style.textContent = `
+                @keyframes confetti {
+                    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    // Fechar modal
+    document.getElementById('habitModal').addEventListener('click', function(e) {
+        if (e.target.id === 'habitModal') {
+            closeModal();
+        }
+    });
+
+    // REMOVER função loadDataFromJson antiga
+    // Manter apenas as novas funções de arquivo
+</script>
 </body>
 </html>
