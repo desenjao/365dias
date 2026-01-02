@@ -1,0 +1,37 @@
+{
+  "habits": [
+    {
+      "id": 1,
+      "name": "Beber água",
+      "description": "2 litros por dia",
+      "frequency": "daily",
+      "time": "morning",
+      "completedToday": true,
+      "streak": 7,
+      "createdAt": "2026-01-02T03:12:54.625Z"
+    },
+    {
+      "id": 2,
+      "name": "Exercitar",
+      "description": "30 minutos de atividade",
+      "frequency": "daily",
+      "time": "evening",
+      "completedToday": false,
+      "streak": 5,
+      "createdAt": "2026-01-02T03:12:54.626Z"
+    },
+    {
+      "id": 1767370281732,
+      "name": "jogar bola",
+      "description": "1 vex por semana",
+      "frequency": "week",
+      "time": "morning",
+      "completedToday": false,
+      "streak": 0,
+      "createdAt": "2026-01-02T16:11:21.732Z"
+    }
+  ],
+  "completions": {},
+  "lastUpdated": "2026-01-02T16:11:21.733Z",
+  "version": "1.0"
+}
